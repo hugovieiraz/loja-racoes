@@ -5,6 +5,9 @@ import { Card, Botao, Campo, CampoArea, Modal, Vazio, Avatar, Selo } from '../co
 import { formatarMoeda, formatarDataHora, rotuloPagamento, lerMoeda } from '../utils/formato.js'
 import { debitoDoCliente } from '../utils/calculos.js'
 import { comprimirImagem } from '../utils/imagem.js'
+import { efeitoDinheiro } from '../utils/efeitos.js'
+import { linkWhatsApp, mensagemCobranca } from '../utils/whatsapp.js'
+import { MessageCircle } from 'lucide-react'
 
 export default function ClienteDetalhe({ clienteId, aoVoltar }) {
   const { clientes, vendas, pagamentos, salvarCliente, excluirCliente, registrarPagamento } = useDados()
@@ -81,6 +84,7 @@ export default function ClienteDetalhe({ clienteId, aoVoltar }) {
     if (valor <= 0) return alert('Informe um valor válido.')
     if (valor > debito) return alert(`O valor é maior que o débito (${formatarMoeda(debito)}).`)
     registrarPagamento({ clienteId: cliente.id, valor })
+    efeitoDinheiro()
     setValorPagamento('')
     setModalPagamento(false)
   }
@@ -135,9 +139,22 @@ export default function ClienteDetalhe({ clienteId, aoVoltar }) {
             {formatarMoeda(debito)}
           </div>
           {debito > 0 && (
-            <Botao className="mt-3" onClick={() => setModalPagamento(true)}>
-              Registrar pagamento
-            </Botao>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => {
+                  const link = linkWhatsApp(cliente.telefone, mensagemCobranca(cliente.nome, formatarMoeda(debito)))
+                  if (!link) return alert('Cliente sem telefone cadastrado.')
+                  salvarCliente({ id: cliente.id, ultimaCobranca: new Date().toISOString() })
+                  window.open(link, '_blank')
+                }}
+                className="py-3 rounded-xl font-semibold text-sm bg-[#25D366] text-white active:opacity-80 flex items-center justify-center gap-1.5"
+              >
+                <MessageCircle size={17} /> Cobrar
+              </button>
+              <Botao className="!py-3 !text-sm" onClick={() => setModalPagamento(true)}>
+                Registrar pagamento
+              </Botao>
+            </div>
           )}
         </Card>
 

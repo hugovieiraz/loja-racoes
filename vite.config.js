@@ -11,7 +11,7 @@ export default defineConfig({
     tailwindcss(),
     // Service worker: faz o app abrir mesmo sem internet
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       manifest: false, // usamos o public/manifest.json
       includeAssets: ['logo.svg', 'apple-touch-icon.png', 'icone-192.png', 'icone-512.png', 'manifest.json'],
       workbox: {

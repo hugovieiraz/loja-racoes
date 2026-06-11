@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { Minus, Plus, Trash2 } from 'lucide-react'
+import { Minus, Plus, Trash2, CheckCircle2 } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
-import { Cabecalho, Card, Busca, Botao, Vazio, Avatar, Selo } from '../components/Ui.jsx'
+import { Cabecalho, Card, Busca, Botao, Vazio, Avatar } from '../components/Ui.jsx'
 import { formatarMoeda, FORMAS_PAGAMENTO } from '../utils/formato.js'
+import { efeitoDinheiro } from '../utils/efeitos.js'
+import { ehDono } from '../utils/perfil.js'
 import HistoricoVendas from './HistoricoVendas.jsx'
 
 export default function Venda() {
@@ -41,6 +43,8 @@ function NovaVenda() {
   const [buscaProduto, setBuscaProduto] = useState('')
   const [carrinho, setCarrinho] = useState({}) // { produtoId: quantidade }
   const [formaPagamento, setFormaPagamento] = useState('dinheiro')
+  const [vendaFeita, setVendaFeita] = useState(null)
+  const mostrarLucro = ehDono()
 
   const cliente = clientes.find((c) => c.id === clienteId)
 
@@ -97,16 +101,29 @@ function NovaVenda() {
       itens: itens.map(({ estoque: _e, ...i }) => i),
       formaPagamento,
     })
+    efeitoDinheiro()
+    setVendaFeita(formatarMoeda(total))
+    setTimeout(() => setVendaFeita(null), 2600)
     setCarrinho({})
     setClienteId(null)
     setBuscaCliente('')
     setBuscaProduto('')
     setFormaPagamento('dinheiro')
-    alert('Venda registrada com sucesso!')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <div className="p-4 space-y-4">
+      {/* Aviso de venda registrada */}
+      {vendaFeita && (
+        <div className="fixed bottom-24 inset-x-4 z-40 max-w-md mx-auto">
+          <div className="bg-emerald-600 text-white rounded-2xl shadow-lg p-4 flex items-center gap-3">
+            <CheckCircle2 size={24} className="shrink-0" />
+            <div className="font-bold">Venda de {vendaFeita} registrada!</div>
+          </div>
+        </div>
+      )}
+
       {/* 1. Cliente */}
       <section className="space-y-2">
         <h2 className="font-bold text-slate-700">1. Cliente</h2>
@@ -216,10 +233,12 @@ function NovaVenda() {
           <span className="font-bold text-slate-800">Total</span>
           <span className="text-2xl font-bold text-slate-800">{formatarMoeda(total)}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500">Lucro estimado</span>
-          <span className="font-semibold text-emerald-600">{formatarMoeda(lucro)}</span>
-        </div>
+        {mostrarLucro && (
+          <div className="flex justify-between text-sm">
+            <span className="text-slate-500">Lucro estimado</span>
+            <span className="font-semibold text-emerald-600">{formatarMoeda(lucro)}</span>
+          </div>
+        )}
       </Card>
 
       <Botao onClick={aoConfirmar} disabled={itens.length === 0}>

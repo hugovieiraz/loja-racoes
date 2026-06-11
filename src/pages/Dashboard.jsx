@@ -28,7 +28,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Cabecalho titulo="Loja de Rações" />
+      <Cabecalho titulo="Lamartine Rações" />
       <div className="p-4 space-y-3">
         {mostrarLembrete && (
           <div className="rounded-2xl bg-sky-50 ring-1 ring-sky-200 p-4 flex items-start gap-3">

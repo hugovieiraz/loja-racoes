@@ -3,6 +3,7 @@ import { Plus, Pencil, Trash2, AlertTriangle } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
 import { Cabecalho, Card, Busca, Botao, Campo, CampoArea, Modal, Vazio, Selo } from '../components/Ui.jsx'
 import { formatarMoeda, lerMoeda, moedaParaCampo } from '../utils/formato.js'
+import { ehDono } from '../utils/perfil.js'
 
 const FORM_VAZIO = {
   nome: '',
@@ -52,18 +53,21 @@ export default function Produtos() {
   function aoSalvar(e) {
     e.preventDefault()
     if (!form.nome.trim()) return alert('Informe o nome do produto.')
-    salvarProduto({
+    const dadosProduto = {
       id: editandoId || undefined,
       nome: form.nome.trim(),
       marca: form.marca.trim(),
       categoria: form.categoria.trim(),
       peso: form.peso.trim(),
-      precoCompra: lerMoeda(form.precoCompra),
+      precoCompra: ehDono() ? lerMoeda(form.precoCompra) : 0,
       precoVenda: lerMoeda(form.precoVenda),
       estoque: parseInt(form.estoque, 10) || 0,
       estoqueMinimo: parseInt(form.estoqueMinimo, 10) || 0,
       observacoes: form.observacoes.trim(),
-    })
+    }
+    // Funcionário editando: mantém o preço de compra que o dono cadastrou
+    if (!ehDono() && editandoId) delete dadosProduto.precoCompra
+    salvarProduto(dadosProduto)
     setModalAberto(false)
   }
 
@@ -118,12 +122,14 @@ export default function Produtos() {
                   <div className="text-slate-400 text-xs">Venda</div>
                   <div className="font-semibold">{formatarMoeda(p.precoVenda)}</div>
                 </div>
-                <div>
-                  <div className="text-slate-400 text-xs">Lucro/saco</div>
-                  <div className={`font-semibold ${lucro >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-                    {formatarMoeda(lucro)}
+                {ehDono() && (
+                  <div>
+                    <div className="text-slate-400 text-xs">Lucro/saco</div>
+                    <div className={`font-semibold ${lucro >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+                      {formatarMoeda(lucro)}
+                    </div>
                   </div>
-                </div>
+                )}
                 <div>
                   <div className="text-slate-400 text-xs">Estoque</div>
                   <div className={`font-semibold ${estoqueBaixo ? 'text-red-600' : ''}`}>
@@ -149,12 +155,16 @@ export default function Produtos() {
           <Campo rotulo="Tipo / categoria" value={form.categoria} onChange={mudar('categoria')} placeholder="Ex.: Cachorro, Gato, Aves" />
           <Campo rotulo="Peso do saco" value={form.peso} onChange={mudar('peso')} placeholder="Ex.: 15 kg" />
           <div className="grid grid-cols-2 gap-3">
-            <Campo rotulo="Preço de compra (R$)" inputMode="decimal" value={form.precoCompra} onChange={mudar('precoCompra')} placeholder="0,00" />
+            {ehDono() && (
+              <Campo rotulo="Preço de compra (R$)" inputMode="decimal" value={form.precoCompra} onChange={mudar('precoCompra')} placeholder="0,00" />
+            )}
             <Campo rotulo="Preço de venda (R$)" inputMode="decimal" value={form.precoVenda} onChange={mudar('precoVenda')} placeholder="0,00" />
           </div>
-          <div className={`text-sm font-semibold ${lucroPrevisto >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
-            Lucro por saco: {formatarMoeda(lucroPrevisto)}
-          </div>
+          {ehDono() && (
+            <div className={`text-sm font-semibold ${lucroPrevisto >= 0 ? 'text-emerald-600' : 'text-red-600'}`}>
+              Lucro por saco: {formatarMoeda(lucroPrevisto)}
+            </div>
+          )}
           <div className="grid grid-cols-2 gap-3">
             <Campo rotulo="Estoque atual" type="number" min="0" value={form.estoque} onChange={mudar('estoque')} placeholder="0" />
             <Campo rotulo="Estoque mínimo" type="number" min="0" value={form.estoqueMinimo} onChange={mudar('estoqueMinimo')} placeholder="0" />

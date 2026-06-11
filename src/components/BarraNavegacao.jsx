@@ -1,6 +1,7 @@
-import { Home, Package, Users, ShoppingCart, HandCoins, BarChart3 } from 'lucide-react'
+import { Home, Package, Users, ShoppingCart, HandCoins, BarChart3, Settings } from 'lucide-react'
+import { ehDono } from '../utils/perfil.js'
 
-const ABAS = [
+const TODAS_ABAS = [
   { id: 'inicio', rotulo: 'Início', Icone: Home },
   { id: 'produtos', rotulo: 'Produtos', Icone: Package },
   { id: 'clientes', rotulo: 'Clientes', Icone: Users },
@@ -10,10 +11,17 @@ const ABAS = [
 ]
 
 export default function BarraNavegacao({ abaAtiva, aoTrocar }) {
+  // Funcionário não vê Relatórios (vira "Ajustes") nem o Início com totais
+  const abas = ehDono()
+    ? TODAS_ABAS
+    : TODAS_ABAS.filter((a) => a.id !== 'inicio').map((a) =>
+        a.id === 'relatorios' ? { ...a, rotulo: 'Ajustes', Icone: Settings } : a,
+      )
+
   return (
     <nav className="fixed bottom-0 inset-x-0 z-20 bg-white border-t border-slate-200 pb-[env(safe-area-inset-bottom)]">
-      <div className="grid grid-cols-6">
-        {ABAS.map(({ id, rotulo, Icone }) => {
+      <div className="grid" style={{ gridTemplateColumns: `repeat(${abas.length}, 1fr)` }}>
+        {abas.map(({ id, rotulo, Icone }) => {
           const ativa = abaAtiva === id
           return (
             <button

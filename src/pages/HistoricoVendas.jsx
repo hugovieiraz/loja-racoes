@@ -3,6 +3,7 @@ import { Trash2 } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
 import { Card, Busca, Campo, CampoSelecao, Vazio, Selo } from '../components/Ui.jsx'
 import { formatarMoeda, formatarDataHora, rotuloPagamento, chaveDia, FORMAS_PAGAMENTO } from '../utils/formato.js'
+import { ehDono } from '../utils/perfil.js'
 
 export default function HistoricoVendas() {
   const { vendas, excluirVenda } = useDados()
@@ -84,7 +85,9 @@ export default function HistoricoVendas() {
           </div>
           <div className="mt-2 flex justify-between text-sm">
             <span className="font-bold text-slate-800 text-base">{formatarMoeda(v.total)}</span>
-            <span className="text-emerald-600 font-semibold">lucro {formatarMoeda(v.lucro)}</span>
+            {ehDono() && (
+              <span className="text-emerald-600 font-semibold">lucro {formatarMoeda(v.lucro)}</span>
+            )}
           </div>
         </Card>
       ))}

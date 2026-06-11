@@ -1,19 +1,73 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#10b981"/>
-      <stop offset="100%" stop-color="#047857"/>
+    <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6d9a0"/>
+      <stop offset="38%" stop-color="#edb36b"/>
+      <stop offset="62%" stop-color="#d98e4f"/>
+      <stop offset="80%" stop-color="#8a8a4a"/>
+      <stop offset="100%" stop-color="#5d6b3a"/>
     </linearGradient>
+    <radialGradient id="sol" cx="50%" cy="42%" r="42%">
+      <stop offset="0%" stop-color="#fdf3d8" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#fdf3d8" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="circulo"><circle cx="256" cy="256" r="236"/></clipPath>
   </defs>
-  <!-- Fundo arredondado -->
-  <rect width="512" height="512" rx="116" fill="url(#fundo)"/>
-  <!-- Pata (almofada central) -->
-  <ellipse cx="256" cy="312" rx="86" ry="74" fill="#ffffff"/>
-  <!-- Dedos -->
-  <ellipse cx="166" cy="216" rx="34" ry="44" fill="#ffffff" transform="rotate(-20 166 216)"/>
-  <ellipse cx="226" cy="172" rx="34" ry="46" fill="#ffffff" transform="rotate(-6 226 172)"/>
-  <ellipse cx="294" cy="172" rx="34" ry="46" fill="#ffffff" transform="rotate(6 294 172)"/>
-  <ellipse cx="352" cy="216" rx="34" ry="44" fill="#ffffff" transform="rotate(20 352 216)"/>
-  <!-- Cifrão discreto na almofada -->
-  <text x="256" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="84" fill="#047857">R$</text>
+
+  <!-- Fundo: pôr do sol no campo -->
+  <g clip-path="url(#circulo)">
+    <rect width="512" height="512" fill="url(#ceu)"/>
+    <rect width="512" height="512" fill="url(#sol)"/>
+  </g>
+
+  <!-- Anel externo creme -->
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#f5ecd7" stroke-width="14"/>
+  <circle cx="256" cy="256" r="224" fill="none" stroke="#1d4a2c" stroke-width="3" opacity="0.35"/>
+
+  <g fill="#1d4a2c">
+    <!-- Arco de ramos -->
+    <path d="M 96 198 Q 160 92 256 86 Q 352 92 416 198" fill="none" stroke="#1d4a2c" stroke-width="13" stroke-linecap="round"/>
+    <!-- Folhas do arco -->
+    <g>
+      <ellipse cx="112" cy="180" rx="17" ry="8" transform="rotate(-52 112 180)"/>
+      <ellipse cx="134" cy="150" rx="17" ry="8" transform="rotate(-44 134 150)"/>
+      <ellipse cx="160" cy="126" rx="17" ry="8" transform="rotate(-34 160 126)"/>
+      <ellipse cx="190" cy="107" rx="17" ry="8" transform="rotate(-24 190 107)"/>
+      <ellipse cx="222" cy="95"  rx="17" ry="8" transform="rotate(-12 222 95)"/>
+      <ellipse cx="256" cy="90"  rx="17" ry="8"/>
+      <ellipse cx="290" cy="95"  rx="17" ry="8" transform="rotate(12 290 95)"/>
+      <ellipse cx="322" cy="107" rx="17" ry="8" transform="rotate(24 322 107)"/>
+      <ellipse cx="352" cy="126" rx="17" ry="8" transform="rotate(34 352 126)"/>
+      <ellipse cx="378" cy="150" rx="17" ry="8" transform="rotate(44 378 150)"/>
+      <ellipse cx="400" cy="180" rx="17" ry="8" transform="rotate(52 400 180)"/>
+    </g>
+
+    <!-- Galo (em cima da vaca) -->
+    <g transform="translate(196,132) scale(1.0)">
+      <path d="M 22 56 Q 8 52 6 40 Q 14 44 18 40 Q 4 34 6 20 Q 16 28 20 24 Q 12 12 20 4 Q 26 16 30 20 Q 36 14 44 16 Q 40 22 40 28 Q 52 30 56 40 Q 50 40 47 42 Q 52 48 48 56 Q 40 52 34 56 L 32 64 L 36 70 L 30 70 L 28 64 L 26 70 L 20 70 L 24 64 Z"/>
+      <circle cx="49" cy="35" r="1.6" fill="#f5ecd7"/>
+    </g>
+
+    <!-- Vaca (grande, perfil esquerda) -->
+    <g transform="translate(118,186)">
+      <path d="M 34 34 Q 30 26 22 26 L 10 30 Q 2 33 2 41 Q 2 49 10 51 L 20 51 Q 22 58 30 60 L 30 96 L 42 96 L 44 72 Q 64 78 98 76 L 118 76 L 120 96 L 132 96 L 134 72 Q 146 66 146 50 Q 146 40 138 34 Q 142 24 134 20 Q 128 24 127 31 Q 96 22 58 28 Q 44 30 34 34 Z"/>
+      <path d="M 22 26 Q 16 18 8 19 Q 12 26 18 28 Z"/>
+      <path d="M 30 25 Q 30 17 37 14 Q 38 22 34 26 Z"/>
+    </g>
+
+    <!-- Ovelha (menor, à direita) -->
+    <g transform="translate(286,224)">
+      <path d="M 14 26 Q 8 18 16 12 Q 12 4 22 2 Q 26 -4 36 0 Q 44 -6 52 0 Q 62 -2 64 8 Q 72 10 70 20 Q 76 26 68 32 L 66 36 L 66 56 L 58 56 L 56 38 Q 42 42 28 38 L 26 56 L 18 56 L 18 34 Q 10 32 14 26 Z"/>
+      <path d="M 6 20 Q 0 22 0 28 Q 0 34 8 34 L 14 32 Q 8 28 10 22 Z"/>
+    </g>
+
+    <!-- Linha de grama -->
+    <path d="M 120 286 Q 256 296 392 286 L 392 292 Q 256 302 120 292 Z"/>
+
+    <!-- Tipografia -->
+    <text x="256" y="356" text-anchor="middle" font-family="DejaVu Serif" font-weight="bold" font-size="54" letter-spacing="3">LAMARTINE</text>
+    <text x="256" y="398" text-anchor="middle" font-family="DejaVu Sans" font-weight="bold" font-size="26" letter-spacing="10">RAÇÕES</text>
+    <rect x="148" y="388" width="34" height="3.5" rx="1.75"/>
+    <rect x="330" y="388" width="34" height="3.5" rx="1.75"/>
+  </g>
 </svg>

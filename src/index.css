@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Paleta da marca: verde "Lamartine" substitui o verde padrão (emerald) */
+@theme {
+  --color-emerald-50: #f1f7f2;
+  --color-emerald-100: #ddecdf;
+  --color-emerald-200: #bcd9c1;
+  --color-emerald-300: #8fbf99;
+  --color-emerald-400: #5c9e6c;
+  --color-emerald-500: #3a7f4d;
+  --color-emerald-600: #28663c;
+  --color-emerald-700: #1d4a2c;
+  --color-emerald-800: #173b24;
+  --color-emerald-900: #122e1d;
+  --color-emerald-950: #0a1c11;
+}
+
 html {
   -webkit-tap-highlight-color: transparent;
 }
@@ -8,3 +23,49 @@ body {
   background-color: var(--color-slate-100);
   overscroll-behavior-y: none;
 }
+
+/* ---------- Modo escuro ----------
+   Aplicado pela classe .dark no <html>. Em vez de espalhar variantes dark:
+   por todas as telas, sobrescrevemos aqui as classes de superfície/texto. */
+html.dark body { background-color: #0f1714; }
+.dark .bg-white { background-color: #1a2620; }
+.dark .bg-slate-100 { background-color: #0f1714; }
+.dark .bg-slate-200 { background-color: #243329; }
+.dark .bg-slate-50 { background-color: #243329; }
+.dark .active\:bg-slate-50:active { background-color: #243329; }
+.dark .active\:bg-slate-100:active { background-color: #2c3d32; }
+.dark .active\:bg-slate-300:active { background-color: #2c3d32; }
+.dark .text-slate-800 { color: #e8efe9; }
+.dark .text-slate-700 { color: #cfdcd2; }
+.dark .text-slate-600 { color: #a8bbac; }
+.dark .text-slate-500 { color: #8da592; }
+.dark .text-slate-400 { color: #6f8a76; }
+.dark .text-slate-300 { color: #4e6655; }
+.dark .border-slate-300 { border-color: #3a4f41; }
+.dark .border-slate-200 { border-color: #2c3d32; }
+.dark .border-slate-100 { border-color: #243329; }
+.dark .border-slate-50 { border-color: #243329; }
+.dark .ring-slate-900\/5 { --tw-ring-color: rgb(255 255 255 / 0.06); }
+.dark .bg-emerald-50 { background-color: #14241a; }
+.dark .bg-emerald-100 { background-color: #1d3526; }
+.dark .text-emerald-700 { color: #8fbf99; }
+.dark .bg-amber-50 { background-color: #2a2113; }
+.dark .bg-amber-100 { background-color: #3a2d17; }
+.dark .text-amber-700 { color: #e3b35e; }
+.dark .text-amber-900 { color: #f0cd8d; }
+.dark .bg-red-50 { background-color: #2a1614; }
+.dark .bg-red-100 { background-color: #3a1d1a; }
+.dark .text-red-700 { color: #e58a80; }
+.dark .bg-sky-50 { background-color: #12222b; }
+.dark .ring-sky-200 { --tw-ring-color: #1d3a4a; }
+.dark .text-sky-900 { color: #bcd9e8; }
+.dark .text-sky-700 { color: #7db4d4; }
+.dark input, .dark select, .dark textarea { color-scheme: dark; }
+
+/* Animação de erro do PIN */
+@keyframes tremer {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+.animar-tremer { animation: tremer 0.18s ease-in-out 2; }
