@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import BarraNavegacao from './components/BarraNavegacao.jsx'
 import AvisoAtualizacao from './components/AvisoAtualizacao.jsx'
+import AvisoInstalacao from './components/AvisoInstalacao.jsx'
 import TelaPin from './components/TelaPin.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import Produtos from './pages/Produtos.jsx'
@@ -66,6 +67,7 @@ export default function App() {
   return (
     <div className="min-h-screen pb-20 max-w-lg mx-auto">
       <AvisoAtualizacao />
+      <AvisoInstalacao />
       {conteudo}
       <BarraNavegacao abaAtiva={aba} aoTrocar={trocarAba} />
     </div>
