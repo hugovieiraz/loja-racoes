@@ -4,6 +4,7 @@ import { useDados } from '../context/DadosContext.jsx'
 import { useAutenticacao } from '../context/AutenticacaoContext.jsx'
 import { Cabecalho, Card, Campo, Vazio, Botao } from '../components/Ui.jsx'
 import GraficoBarras from '../components/GraficoBarras.jsx'
+import Analises from '../components/Analises.jsx'
 import { formatarMoeda, chaveDia, chaveMes } from '../utils/formato.js'
 import { exportarBackup } from '../utils/backup.js'
 import { alternarTema, temaEscuroAtivo, alternarSons, sonsAtivos, vibrar } from '../utils/efeitos.js'
@@ -293,6 +294,8 @@ export default function Relatorios() {
             cor="text-red-600"
           />
         </Card>
+
+        <Analises />
 
         <Card>
           <h2 className="font-bold text-slate-700 mb-2">Produtos mais vendidos (mês)</h2>

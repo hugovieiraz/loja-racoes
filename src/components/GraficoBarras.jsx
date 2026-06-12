@@ -1,5 +1,5 @@
 // Gráfico de barras simples, sem bibliotecas — leve e rápido no celular.
-export default function GraficoBarras({ itens, formatarValor }) {
+export default function GraficoBarras({ itens, formatarValor, rotuloMelhor = 'Melhor dia' }) {
   const maximo = Math.max(...itens.map((i) => i.valor), 1)
   const [melhor] = [...itens].sort((a, b) => b.valor - a.valor)
 
@@ -28,7 +28,7 @@ export default function GraficoBarras({ itens, formatarValor }) {
       </div>
       {melhor && melhor.valor > 0 && (
         <div className="text-xs text-slate-500 mt-2">
-          Melhor dia: <strong className="text-emerald-600">{melhor.rotulo}</strong> com{' '}
+          {rotuloMelhor}: <strong className="text-emerald-600">{melhor.rotulo}</strong> com{' '}
           <strong>{formatarValor(melhor.valor)}</strong>
         </div>
       )}
