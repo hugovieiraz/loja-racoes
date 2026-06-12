@@ -66,7 +66,6 @@ function NovaVenda() {
         quantidade,
         precoVenda: p.precoVenda,
         precoCompra: p.precoCompra,
-        estoque: p.estoque,
       }
     })
     .filter(Boolean)
@@ -77,14 +76,9 @@ function NovaVenda() {
   function alterarQuantidade(produtoId, delta) {
     setCarrinho((c) => {
       const atual = (c[produtoId] || 0) + delta
-      const produto = produtos.find((p) => p.id === produtoId)
       if (atual <= 0) {
         const { [produtoId]: _removido, ...resto } = c
         return resto
-      }
-      if (produto && atual > produto.estoque) {
-        alert(`Estoque insuficiente: restam ${produto.estoque} unidade(s) de ${produto.nome}.`)
-        return c
       }
       return { ...c, [produtoId]: atual }
     })
@@ -98,7 +92,7 @@ function NovaVenda() {
     registrarVenda({
       clienteId: cliente?.id || null,
       clienteNome: cliente?.nome || 'Venda avulsa',
-      itens: itens.map(({ estoque: _e, ...i }) => i),
+      itens,
       formaPagamento,
     })
     efeitoDinheiro()
@@ -167,7 +161,7 @@ function NovaVenda() {
                   <div className="min-w-0 flex-1">
                     <div className="font-semibold text-slate-800 truncate">{p.nome}</div>
                     <div className="text-sm text-slate-500">
-                      {formatarMoeda(p.precoVenda)} · estoque: {p.estoque}
+                      {formatarMoeda(p.precoVenda)}
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
@@ -181,7 +175,6 @@ function NovaVenda() {
                     )}
                     <button
                       onClick={() => alterarQuantidade(p.id, 1)}
-                      disabled={p.estoque <= 0 && qtd === 0}
                       className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center active:bg-emerald-700 disabled:bg-slate-300"
                       aria-label="Adicionar"
                     >

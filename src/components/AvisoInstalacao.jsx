@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { X, Download, Share } from 'lucide-react'
+import { X, Download, Share, MoreVertical } from 'lucide-react'
 
 const CHAVE_DISPENSADO = 'lojaRacoes:avisoInstalarDispensado'
-const DIAS_PARA_REPETIR = 7
+const DIAS_PARA_REPETIR = 3
 
 function appJaInstalado() {
   return (
@@ -23,15 +23,17 @@ function dispensadoRecentemente() {
 }
 
 // Convida quem abriu pelo link do navegador a instalar o app na tela inicial.
+// 3 casos: Android com instalação direta (botão), Android sem o evento
+// (instrução do menu) e iPhone (instrução do Safari).
 export default function AvisoInstalacao() {
-  const [eventoInstalar, setEventoInstalar] = useState(null) // Android/Chrome
-  const [mostrarIos, setMostrarIos] = useState(false) // iPhone/iPad
+  const [eventoInstalar, setEventoInstalar] = useState(null)
   const [visivel, setVisivel] = useState(false)
+
+  const ehIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
 
   useEffect(() => {
     if (appJaInstalado() || dispensadoRecentemente()) return
 
-    // Android/Chrome dispara este evento quando o app pode ser instalado
     function aoPoderInstalar(evento) {
       evento.preventDefault()
       setEventoInstalar(evento)
@@ -39,15 +41,9 @@ export default function AvisoInstalacao() {
     }
     window.addEventListener('beforeinstallprompt', aoPoderInstalar)
 
-    // iPhone/iPad não tem o evento: mostra instrução do Safari
-    const ehIos = /iphone|ipad|ipod/i.test(navigator.userAgent)
-    let timer
-    if (ehIos) {
-      timer = setTimeout(() => {
-        setMostrarIos(true)
-        setVisivel(true)
-      }, 2500)
-    }
+    // Se o navegador não oferecer a instalação direta em alguns segundos
+    // (ex.: logo após desinstalar), mostra a instrução manual mesmo assim.
+    const timer = setTimeout(() => setVisivel(true), 3000)
 
     return () => {
       window.removeEventListener('beforeinstallprompt', aoPoderInstalar)
@@ -80,16 +76,21 @@ export default function AvisoInstalacao() {
         <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="w-12 h-12 shrink-0" />
         <div className="flex-1 min-w-0 text-sm">
           <div className="font-bold text-slate-800">Instale o app no celular</div>
-          {mostrarIos ? (
-            <div className="text-slate-500 flex items-center gap-1 flex-wrap">
-              Toque em <Share size={14} className="inline text-sky-600" /> e depois em
+          {eventoInstalar ? (
+            <div className="text-slate-500">Abre mais rápido e funciona sem internet.</div>
+          ) : ehIos ? (
+            <div className="text-slate-500">
+              Toque em <Share size={14} className="inline text-sky-600" /> e depois em{' '}
               <strong>"Adicionar à Tela de Início"</strong>
             </div>
           ) : (
-            <div className="text-slate-500">Abre mais rápido e funciona sem internet.</div>
+            <div className="text-slate-500">
+              Toque no menu <MoreVertical size={14} className="inline" /> do navegador e escolha{' '}
+              <strong>"Instalar aplicativo"</strong> (ou "Adicionar à tela inicial")
+            </div>
           )}
         </div>
-        {!mostrarIos && (
+        {eventoInstalar && (
           <button
             onClick={instalar}
             className="bg-emerald-600 text-white font-bold text-sm px-3 py-2.5 rounded-xl active:bg-emerald-700 flex items-center gap-1.5 shrink-0"

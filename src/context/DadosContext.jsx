@@ -205,18 +205,11 @@ export function DadosProvider({ children }) {
     setDados((d) => ({
       ...d,
       vendas: [...d.vendas, nova],
-      // Baixa automática de estoque
-      produtos: d.produtos.map((p) => {
-        const item = venda.itens.find((i) => i.produtoId === p.id)
-        return item
-          ? { ...p, estoque: p.estoque - item.quantidade, atualizadoEm: carimbo }
-          : p
-      }),
     }))
     return nova
   }
 
-  // Excluir venda devolve os itens ao estoque (e reduz o fiado, pois o débito é calculado pelas vendas)
+  // Excluir venda também reduz o fiado, pois o débito é calculado pelas vendas
   function excluirVenda(id) {
     const carimbo = agora()
     setDados((d) => {
@@ -226,12 +219,6 @@ export function DadosProvider({ children }) {
         ...d,
         vendas: d.vendas.filter((v) => v.id !== id),
         excluidos: [...d.excluidos, { id, colecao: 'vendas', em: carimbo }],
-        produtos: d.produtos.map((p) => {
-          const item = venda.itens.find((i) => i.produtoId === p.id)
-          return item
-            ? { ...p, estoque: p.estoque + item.quantidade, atualizadoEm: carimbo }
-            : p
-        }),
       }
     })
   }

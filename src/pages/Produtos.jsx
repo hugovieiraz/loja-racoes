@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Plus, Pencil, Trash2, AlertTriangle } from 'lucide-react'
+import { Plus, Pencil, Trash2 } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
-import { Cabecalho, Card, Busca, Botao, Campo, CampoArea, Modal, Vazio, Selo } from '../components/Ui.jsx'
+import { Cabecalho, Card, Busca, Botao, Campo, CampoArea, Modal, Vazio } from '../components/Ui.jsx'
 import { formatarMoeda, lerMoeda, moedaParaCampo } from '../utils/formato.js'
 import { ehDono } from '../utils/perfil.js'
 
@@ -12,8 +12,6 @@ const FORM_VAZIO = {
   peso: '',
   precoCompra: '',
   precoVenda: '',
-  estoque: '',
-  estoqueMinimo: '',
   observacoes: '',
 }
 
@@ -43,8 +41,6 @@ export default function Produtos() {
       peso: produto.peso,
       precoCompra: moedaParaCampo(produto.precoCompra),
       precoVenda: moedaParaCampo(produto.precoVenda),
-      estoque: String(produto.estoque),
-      estoqueMinimo: String(produto.estoqueMinimo),
       observacoes: produto.observacoes,
     })
     setModalAberto(true)
@@ -61,8 +57,6 @@ export default function Produtos() {
       peso: form.peso.trim(),
       precoCompra: ehDono() ? lerMoeda(form.precoCompra) : 0,
       precoVenda: lerMoeda(form.precoVenda),
-      estoque: parseInt(form.estoque, 10) || 0,
-      estoqueMinimo: parseInt(form.estoqueMinimo, 10) || 0,
       observacoes: form.observacoes.trim(),
     }
     // Funcionário editando: mantém o preço de compra que o dono cadastrou
@@ -98,7 +92,6 @@ export default function Produtos() {
 
         {filtrados.map((p) => {
           const lucro = p.precoVenda - p.precoCompra
-          const estoqueBaixo = p.estoque <= p.estoqueMinimo
           return (
             <Card key={p.id}>
               <div className="flex justify-between items-start gap-2">
@@ -117,7 +110,7 @@ export default function Produtos() {
                   </button>
                 </div>
               </div>
-              <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
+              <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
                 <div>
                   <div className="text-slate-400 text-xs">Venda</div>
                   <div className="font-semibold">{formatarMoeda(p.precoVenda)}</div>
@@ -130,19 +123,7 @@ export default function Produtos() {
                     </div>
                   </div>
                 )}
-                <div>
-                  <div className="text-slate-400 text-xs">Estoque</div>
-                  <div className={`font-semibold ${estoqueBaixo ? 'text-red-600' : ''}`}>
-                    {p.estoque}
-                    {estoqueBaixo && <AlertTriangle size={14} className="inline ml-1 mb-0.5" />}
-                  </div>
-                </div>
               </div>
-              {estoqueBaixo && (
-                <div className="mt-2">
-                  <Selo cor="bg-red-100 text-red-700">Estoque baixo</Selo>
-                </div>
-              )}
             </Card>
           )
         })}
@@ -165,10 +146,6 @@ export default function Produtos() {
               Lucro por saco: {formatarMoeda(lucroPrevisto)}
             </div>
           )}
-          <div className="grid grid-cols-2 gap-3">
-            <Campo rotulo="Estoque atual" type="number" min="0" value={form.estoque} onChange={mudar('estoque')} placeholder="0" />
-            <Campo rotulo="Estoque mínimo" type="number" min="0" value={form.estoqueMinimo} onChange={mudar('estoqueMinimo')} placeholder="0" />
-          </div>
           <CampoArea rotulo="Observações" value={form.observacoes} onChange={mudar('observacoes')} />
           <Botao type="submit">Salvar produto</Botao>
         </form>

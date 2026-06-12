@@ -34,10 +34,6 @@ export function totalDebitos(clientes, vendas, pagamentos) {
   )
 }
 
-export function produtosEstoqueBaixo(produtos) {
-  return produtos.filter((p) => p.estoque <= p.estoqueMinimo)
-}
-
 // Ranking de produtos mais vendidos (por quantidade) dentro de uma lista de vendas
 export function produtosMaisVendidos(vendasFiltradas, limite = 5) {
   const mapa = {}

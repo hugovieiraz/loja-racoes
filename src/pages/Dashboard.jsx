@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { TrendingUp, Wallet, HandCoins, AlertTriangle, CalendarDays, Banknote, ShieldCheck } from 'lucide-react'
+import { TrendingUp, Wallet, HandCoins, CalendarDays, Banknote, ShieldCheck } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
-import { Cabecalho, Card, CardResumo, Vazio } from '../components/Ui.jsx'
+import { Cabecalho, Card, CardResumo } from '../components/Ui.jsx'
 import { formatarMoeda } from '../utils/formato.js'
 import { exportarBackup, precisaLembrarBackup } from '../utils/backup.js'
 import {
@@ -10,7 +10,6 @@ import {
   somaTotal,
   somaLucro,
   totalDebitos,
-  produtosEstoqueBaixo,
 } from '../utils/calculos.js'
 
 export default function Dashboard() {
@@ -21,7 +20,6 @@ export default function Dashboard() {
   const mesAVista = mes.filter((v) => v.formaPagamento !== 'fiado')
   const mesFiado = mes.filter((v) => v.formaPagamento === 'fiado')
   const debitos = totalDebitos(clientes, vendas, pagamentos)
-  const estoqueBaixo = produtosEstoqueBaixo(produtos)
 
   const temDados = vendas.length > 0 || produtos.length > 0 || clientes.length > 0
   const [mostrarLembrete, setMostrarLembrete] = useState(() => precisaLembrarBackup(temDados))
@@ -103,23 +101,6 @@ export default function Dashboard() {
           </div>
         </Card>
 
-        <h2 className="font-bold text-slate-700 pt-2 flex items-center gap-2">
-          <AlertTriangle size={18} className="text-amber-500" />
-          Estoque baixo ({estoqueBaixo.length})
-        </h2>
-        {estoqueBaixo.length === 0 ? (
-          <Vazio mensagem="Nenhum produto com estoque baixo." />
-        ) : (
-          estoqueBaixo.map((p) => (
-            <Card key={p.id} className="!p-3 flex justify-between items-center">
-              <div className="min-w-0">
-                <div className="font-semibold text-slate-800 truncate">{p.nome}</div>
-                <div className="text-xs text-slate-400">mínimo: {p.estoqueMinimo}</div>
-              </div>
-              <div className="font-bold text-red-600 shrink-0">{p.estoque} un.</div>
-            </Card>
-          ))
-        )}
       </div>
     </div>
   )
