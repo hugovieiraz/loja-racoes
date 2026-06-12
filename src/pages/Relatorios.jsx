@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { BarChart3, ChevronDown, ChevronUp } from 'lucide-react'
 import { Download, Upload, Moon, Sun, Volume2, VolumeX, Lock, Cloud, CloudOff, LogOut, UserCog } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
 import { useAutenticacao } from '../context/AutenticacaoContext.jsx'
@@ -227,6 +228,7 @@ export default function Relatorios() {
   const { produtos, clientes, vendas, pagamentos } = dados
   const [dia, setDia] = useState(chaveDia())
   const [mes, setMes] = useState(chaveMes())
+  const [mostrarAnalises, setMostrarAnalises] = useState(false)
 
   // Funcionário só vê os Ajustes
   if (!ehDono()) {
@@ -295,7 +297,24 @@ export default function Relatorios() {
           />
         </Card>
 
-        <Analises />
+        {mostrarAnalises ? (
+          <>
+            <button
+              onClick={() => setMostrarAnalises(false)}
+              className="w-full py-3 rounded-xl font-semibold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 flex items-center justify-center gap-2"
+            >
+              <ChevronUp size={18} /> Esconder análises
+            </button>
+            <Analises />
+          </>
+        ) : (
+          <button
+            onClick={() => setMostrarAnalises(true)}
+            className="w-full py-3.5 rounded-xl font-semibold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 flex items-center justify-center gap-2"
+          >
+            <BarChart3 size={18} /> Ver análises detalhadas <ChevronDown size={18} />
+          </button>
+        )}
 
         <Card>
           <h2 className="font-bold text-slate-700 mb-2">Produtos mais vendidos (mês)</h2>

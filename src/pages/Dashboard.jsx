@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { TrendingUp, Wallet, HandCoins, CalendarDays, Banknote, ShieldCheck } from 'lucide-react'
+import { TrendingUp, Wallet, HandCoins, CalendarDays, Banknote, ShieldCheck, Plus } from 'lucide-react'
 import { useDados } from '../context/DadosContext.jsx'
-import { Cabecalho, Card, CardResumo } from '../components/Ui.jsx'
+import { Cabecalho, Card, CardResumo, Botao } from '../components/Ui.jsx'
 import { formatarMoeda } from '../utils/formato.js'
 import { exportarBackup, precisaLembrarBackup } from '../utils/backup.js'
 import {
@@ -12,7 +12,7 @@ import {
   totalDebitos,
 } from '../utils/calculos.js'
 
-export default function Dashboard() {
+export default function Dashboard({ aoNovaVenda }) {
   const { produtos, clientes, vendas, pagamentos } = useDados()
 
   const hoje = vendasDoDia(vendas)
@@ -65,6 +65,13 @@ export default function Dashboard() {
             </span>
           </div>
         </div>
+
+        {/* Atalho principal: registrar venda */}
+        <Botao className="!py-4 !text-lg" onClick={aoNovaVenda}>
+          <span className="flex items-center justify-center gap-2">
+            <Plus size={24} /> Registrar venda
+          </span>
+        </Botao>
 
         <div className="grid grid-cols-2 gap-3">
           <CardResumo

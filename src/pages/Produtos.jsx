@@ -87,7 +87,7 @@ export default function Produtos() {
         </Botao>
 
         {filtrados.length === 0 && (
-          <Vazio mensagem={produtos.length === 0 ? 'Nenhum produto cadastrado ainda.' : 'Nenhum produto encontrado.'} />
+          <Vazio mensagem={produtos.length === 0 ? 'Nenhuma ração cadastrada ainda. Toque no botão verde "Novo produto" aí em cima para começar. 🐶' : 'Nenhum produto encontrado com esse nome.'} />
         )}
 
         {filtrados.map((p) => {

@@ -215,15 +215,15 @@ export default function Analises() {
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-500">Ticket médio (por venda)</span>
+            <span className="text-sm text-slate-500">Valor médio por venda</span>
             <div className="text-right">
               <div className="font-bold text-slate-800">{formatarMoeda(ticketMedio)}</div>
               <Variacao atual={ticketMedio} anterior={ticketAnterior} formatar={formatarMoeda} />
             </div>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-500">Margem de lucro</span>
-            <div className="font-bold text-slate-800">{margem}%</div>
+            <span className="text-sm text-slate-500">Lucro a cada R$ 100 vendidos</span>
+            <div className="font-bold text-slate-800">{formatarMoeda(margem * 100)}</div>
           </div>
         </div>
       </Card>

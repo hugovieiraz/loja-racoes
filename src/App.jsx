@@ -51,7 +51,7 @@ export default function App() {
   if (clienteAbertoId) {
     conteudo = <ClienteDetalhe clienteId={clienteAbertoId} aoVoltar={() => setClienteAbertoId(null)} />
   } else if (aba === 'inicio') {
-    conteudo = <Dashboard />
+    conteudo = <Dashboard aoNovaVenda={() => trocarAba('venda')} />
   } else if (aba === 'produtos') {
     conteudo = <Produtos />
   } else if (aba === 'clientes') {

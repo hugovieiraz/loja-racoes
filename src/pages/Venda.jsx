@@ -151,7 +151,7 @@ function NovaVenda() {
       <section className="space-y-2">
         <h2 className="font-bold text-slate-700">2. Produtos</h2>
         <Busca valor={buscaProduto} aoMudar={setBuscaProduto} placeholder="Pesquisar produto..." />
-        {produtos.length === 0 && <Vazio mensagem="Cadastre produtos na aba Produtos." />}
+        {produtos.length === 0 && <Vazio mensagem="Antes de vender, cadastre as rações na aba Produtos (embaixo da tela)." />}
         <div className="space-y-2">
           {produtosFiltrados.map((p) => {
             const qtd = carrinho[p.id] || 0

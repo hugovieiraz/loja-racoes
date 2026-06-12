@@ -67,7 +67,7 @@ export default function Clientes({ aoAbrirCliente }) {
         </Botao>
 
         {filtrados.length === 0 && (
-          <Vazio mensagem={clientes.length === 0 ? 'Nenhum cliente cadastrado ainda.' : 'Nenhum cliente encontrado.'} />
+          <Vazio mensagem={clientes.length === 0 ? 'Nenhum cliente ainda. Toque no botão verde "Novo cliente" aí em cima para cadastrar o primeiro. 😊' : 'Nenhum cliente encontrado com esse nome.'} />
         )}
 
         {filtrados.map((c) => {
